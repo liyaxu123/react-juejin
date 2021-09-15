@@ -2,19 +2,25 @@ import React, {PureComponent} from 'react';
 import {Button, Popover} from 'antd';
 import {Picker} from "emoji-mart";
 import 'emoji-mart/css/emoji-mart.css'
+// 获取光标位置
+import {getDivPosition} from "@/lib/tools";
 
 import style from "./style.module.css";
 
 class PinEditor extends PureComponent {
     state = {
         pinsValue: '',
-        count: 1000
+        count: 1000,
+        // 光标位置
+        cursorPosition: 0
     }
 
-    // 难点：如何在光标指定位置插入表情，参考：https://www.136.la/shida/show-411804.html
+    // 难点：如何在光标指定位置插入表情，参考：https://blog.csdn.net/mafan121/article/details/78519348
     addEmoji = (e) => {
+        // 在光标位置插入表情
+        let newStr = this.inputRef.innerText.slice(0, this.state.cursorPosition) + e.native + this.inputRef.innerText.slice(this.state.cursorPosition)
         this.setState({
-            pinsValue: this.inputRef.innerText + e.native,
+            pinsValue: newStr,
         }, () => {
             let newCount = 1000 - this.state.pinsValue.length;
             this.setState({
@@ -23,10 +29,34 @@ class PinEditor extends PureComponent {
         })
     }
 
+    getMousePosition = (e) => {
+        let caretOffset = getDivPosition(e.target);
+        this.setState({
+            cursorPosition: caretOffset
+        })
+    }
+
     inputChange = (e) => {
         let newCount = 1000 - e.target.innerText.length;
         this.setState({
-            count: newCount
+            count: newCount,
+            cursorPosition: e.target.innerText.length
+        })
+    }
+
+    inputBlur = () => {
+        this.setState({
+            pinsValue: this.inputRef.innerText
+        })
+    }
+
+    // 发布沸点
+    submitPin = () => {
+        alert(`您发布了沸点：${this.state.pinsValue}`);
+        this.setState({
+            pinsValue: '',
+            count: 1000,
+            cursorPosition: 0
         })
     }
 
@@ -42,6 +72,8 @@ class PinEditor extends PureComponent {
                              contentEditable="true"
                              spellCheck="false"
                              onInput={e => this.inputChange(e)}
+                             onClick={e => this.getMousePosition(e)}
+                             onBlur={this.inputBlur}
                              placeholder="告诉你个小秘密，发布沸点时添加合适话题会被更多掘友们看见哟～"/>
                         <span className={style.count}>{this.state.count}</span>
                     </div>
@@ -84,7 +116,8 @@ class PinEditor extends PureComponent {
                         </div>
                     </div>
 
-                    <Button type="primary" disabled={this.state.count < 1000 ? false : true}>发布</Button>
+                    <Button type="primary" disabled={this.state.count < 1000 ? false : true}
+                            onClick={this.submitPin}>发布</Button>
                 </div>
             </div>
         );
