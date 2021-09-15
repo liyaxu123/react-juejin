@@ -20,6 +20,9 @@
 
 .pinsRightWrapper {
     width: 248px;
-    height: 600px;
-    background-color: #fff;
+}
+
+.myCode{
+    width: 100%;
+    margin: 16px 0;
 }

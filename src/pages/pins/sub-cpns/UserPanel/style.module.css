@@ -1,0 +1,53 @@
+.userPanel {
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    padding: 16px;
+    border-bottom: 1px solid rgba(92, 96, 102, .1);
+}
+
+.nickName {
+    margin: 12px 0;
+}
+
+.nickname {
+    color: #17181a;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tag {
+    color: #8f969c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    text-align: center;
+    padding: 14px 0;
+}
+
+.item {
+    flex: 1 1 auto;
+    cursor: pointer;
+}
+
+.text {
+    font-size: 13px;
+    color: #8a9aa9;
+}
+
+.data {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2e3135;
+}
